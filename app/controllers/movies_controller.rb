@@ -9,7 +9,6 @@ class MoviesController < ApplicationController
     # @all_ratings = ['G', 'PG', 'PG-13', 'R']
     
     @all_ratings = Movie.select(:rating).collect(&:rating).uniq.sort
-    # debugger
     @title_class = 'none'
     @release_date_class = 'none'
     order = case params['sort_by']
@@ -22,8 +21,7 @@ class MoviesController < ApplicationController
       else nil
       end
     @ratings = params['ratings'] || {}
-    selection = if @ratings then @ratings.keys else [] end
-    @movies = Movie.where({ :rating => selection}).find(:all, :order => order)
+    @movies = Movie.where({ :rating => @ratings.keys}).find(:all, :order => order)
   end
 
   def new
